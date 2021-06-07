@@ -70,7 +70,7 @@
                         "direction": "Inbound",
                         "sourceAddressPrefix": "*",
                         "sourcePortRange": "*",
-                        "destinatinAddressPrefix": "*",
+                        "destinationAddressPrefix": "*",
                         "destinationPortRange": "3389"
                     }
                 }
@@ -83,7 +83,11 @@
             "apiVersion": "2020-11-01",
             "name": "[concat(parameters('vmName'), '-nic')]",
             "location": "[parameters('location')]",
-            "dependsOn": [],
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('vmName'), '-ip')]"
+            ],
             "properties": {
                 "ipConfigurations": [
                     {
@@ -92,7 +96,7 @@
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             },
-                            "privateIPAllocationMethod": "Static",
+                            "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
                                 "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', concat(parameters('vmName'), '-ip'))]"
                             }
@@ -164,9 +168,7 @@
                             "storageAccountType": "Standard_LRS"
                         }
                     },
-                    "imageReference": {
-                        "id": "[variables('operatingSystemValues')[parameters('windowsOS')]]"
-                    }
+                    "imageReference": "[variables('operatingSystemValues')[parameters('windowsOS')]]"
                 },
                 "networkProfile": {
                     "networkInterfaces": [
