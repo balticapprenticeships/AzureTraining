@@ -11,6 +11,7 @@
 *.sln.docstates
 [Dd]ev
 [Tt]rainer
+AZ-104-a
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
