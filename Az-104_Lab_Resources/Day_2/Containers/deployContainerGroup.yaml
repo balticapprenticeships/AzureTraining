@@ -1,0 +1,33 @@
+apiVersion: 2019-12-01
+location: ukwest
+name: az104lab4cg
+properties:
+  containers:
+  - name: az104lab4cont1
+    properties:
+      image: nginx
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 80
+  - name: az104lab4cont2
+    properties:
+      image: mcr.microsoft.com/azuredocs/aci-helloworld
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+      ports:
+      - port: 8080
+  osType: Linux
+  ipAddress:
+    type: Public
+    ports:
+    - protocol: tcp
+      port: 80
+    - protocol: tcp
+      port: 8080
+tags: {Az-104: lab4}
+type: Microsoft.ContainerInstance/containerGroups

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-deployment
+  template:
+    metadata:
+      labels:
+        app: app-deployment
+    spec:
+      containers:
+      - name: app-deployment
+        volumeMounts:
+          - name: storage
+            mountPath: /mnt/disk1
+        image: nginx
+        ports:
+        - containerPort: 80
+      volumes:
+        - name: storage
+          azureDisk:
+            kind: Managed
+            diskName: <past disk name from step 4 here>
+            diskURI: <past the URI here>
