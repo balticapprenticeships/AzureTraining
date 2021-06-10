@@ -1,0 +1,13 @@
+{
+    "Name": "My Custom RBAC",
+    "Id": "88888888-8888-8888-8888-888888888888",
+    "IsCustom": true,
+    "Description": "Custom RBAC Role",
+    "Actions": [],
+    "NotActions": [],
+    "DataActions": [],
+    "NotDataActions": [],
+    "AssignableScopes": [
+        "/subscriptions/{subscriptionId}"
+    ]
+}
