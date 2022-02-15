@@ -3,7 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "uksouth"
+            "value": "ukwest"
+        },
+        "subnetName": {
+            "value": "" // TODO: Fill in parameter value
         }
     }
 }

@@ -11,11 +11,19 @@
             "metadata": {
                 "description": ""
             }
+        },
+        "subnetName": {
+            "type": "",
+            "metadata": {
+                "description": ""
+            }
         }
     },
     "functions": [],
     "variables": {
-        "vnetname": "[concat(resourceGroup().name, '-vnet')]"
+        "vnetname": "[concat(resourceGroup().name, '-vnet')]",
+        "addressPrefixes": "10.4.0.0/16",
+        "subnetAddressprefix": ""
     },
     "resources": [
         {
@@ -25,7 +33,6 @@
             "location": "[parameters('location')]",
             "tags": {
                 "DisplayName": "Virtual Network",
-                "Created by": "[parameters('createdBy')]",
                 "Course": "AZ-104Lab9"
             },
             "properties": {
