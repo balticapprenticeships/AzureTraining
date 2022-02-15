@@ -1,1 +1,1 @@
-# AzureTraining
+# Baltic Apprenticeships - Microsoft Azure Training Resources
