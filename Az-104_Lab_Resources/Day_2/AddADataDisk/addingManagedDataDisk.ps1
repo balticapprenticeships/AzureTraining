@@ -4,16 +4,18 @@
 # Version: 1.0.0                             #
 ##############################################
 
-# Set the environment variable
-# The resource group where the VM is located
+# Set the environment variable. Add the *REQUIRED* information.
+
+# The resource group where the VM is located. *REQUIRED*
 $rg = "AZ-104Lab6Rg-<your initials>"
 
-# This is the name of the VM to attach the disk to
+# This is the name of the VM to attach the disk to. *REQUIRED*
 $vmName = "<VM Name>"
 
 # This the location of the resource group where the VM and resources are located
 $location = "UK West"
 
+## DO NOT EDIT BELOW ##
 # Here we select the type of disk to attach Premium SSD, Standard SSD or Standard HDD
 $storageType = "Standard_LRS"
 
@@ -22,6 +24,7 @@ $dataDiskName = "$vmName-datadisk"
 
 # This is the size of the additional disk in GB
 $dataDiskSize = "20"
+
 
 ## Create the disk
 # Here we create the data disk config and store it as a variable for later use.
