@@ -1,0 +1,36 @@
+{
+    "mode": "All",
+    "parameters": {
+        "listOfResourceTypesAllowed": {
+            "type": "Array",
+            "metadata": {
+                "description": "List of resource types that can be allowed",
+                "displayName": "Allowed resource types",
+                "strongType": "resourceTypes"
+            }
+        },
+        "effect": {
+            "type": "string",
+            "metadata": {
+                "description": "The effect or action for this policy to take e.g. Audit",
+                "displayName": "Effect"
+            },
+            "defaultValue": "Deny",
+            "allowedValues": [
+                "Deny",
+                "Audit"
+            ]
+        }
+    },
+    "policyRule": {
+        "if": {
+            "not": {
+                "field": "type",
+                "in": "[parameters('listOfResourceTypesAllowed')]"
+            }
+        },
+        "then": {
+            "effect": "[parameters('effect')]"
+        }
+    }
+}

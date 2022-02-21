@@ -1,0 +1,17 @@
+{
+    "properties": {
+        "roleName": "My Custom RBAC <Your initials>",
+        "description": "Custom RBAC Role",
+        "assignableScopes": [
+            "/subscriptions/<subscriptionId>/resourceGroups/<your resourcegroup name>"
+        ],
+        "permissions": [
+            {
+                "actions": [],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}
