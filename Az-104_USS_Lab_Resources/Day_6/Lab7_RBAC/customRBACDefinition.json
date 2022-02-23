@@ -3,11 +3,11 @@
         "roleName": "My Custom RBAC <Your initials>",
         "description": "Custom RBAC Role",
         "assignableScopes": [
-            "/subscriptions/<subscriptionId>/resourceGroups/<your resourcegroup name>"
+            "/subscriptions/<subscriptionId>/resourceGroups/<your resourcegroup name>" //edit this line and remove the <> brackets (delete this comment when done)
         ],
         "permissions": [
             {
-                "actions": [],
+                "actions": [], //edit between the brackets (delete this comment when done)
                 "notActions": [],
                 "dataActions": [],
                 "notDataActions": []
