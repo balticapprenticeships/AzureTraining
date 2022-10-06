@@ -4,7 +4,7 @@
 ### Step 1 - From Cloud Shell, run the following az vm create command to create a Linux VM:
 ```
 az vm create \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --name my-vm \
   --image UbuntuLTS \
   --admin-username azureuser \
@@ -15,7 +15,7 @@ az vm create \
 ### Step 2 - Run the following az vm extension set command to configure Nginx on your VM:
 ```
 az vm extension set \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --vm-name my-vm \
   --name customScript \
   --publisher Microsoft.Azure.Extensions \
@@ -36,7 +36,7 @@ az vm extension set \
 ### Step 1 - Run the following az vm list-ip-addresses command to get your VM's IP address and store the result as a Bash variable:
 ```
 IPADDRESS="$(az vm list-ip-addresses \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --name my-vm \
   --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
   --output tsv)"
@@ -57,7 +57,7 @@ echo $IPADDRESS
 ## List the current network security group rules
 ### Step 1
 az network nsg list \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --query '[].name' \
   --output tsv
 
@@ -68,7 +68,7 @@ az network nsg list \
 ### Step 2 - Run the following command to list the associated NSG rules
 ```
 az network nsg rule list \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --nsg-name my-vmNSG
 ```
 ### Step 3
@@ -76,7 +76,7 @@ az network nsg rule list \
 - The --output argument formats the output as a table so that it's easy to read.
 ```
 az network nsg rule list \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --nsg-name my-vmNSG \
   --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' \
   --output table
@@ -92,7 +92,7 @@ default-allow-ssh  1000        22      Allow
 ### Step 1 Run the following az network nsg rule create command to create a rule called allow-http that allows inbound access on port 80:
 ```
 az network nsg rule create \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --nsg-name my-vmNSG \
   --name allow-http \
   --protocol tcp \
@@ -105,7 +105,7 @@ az network nsg rule create \
 ### Step 2 - To verify the configuration, run az network nsg rule list to see the updated list of rules:
 ```
 az network nsg rule list \
-  --resource-group learn-be2633a2-f735-4d54-8aa2-7aad530cd089 \
+  --resource-group [your resource group name] \
   --nsg-name my-vmNSG \
   --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' \
   --output table
