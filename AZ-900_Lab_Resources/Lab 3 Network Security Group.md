@@ -1,7 +1,20 @@
 # Configure network access to a VM by using a network security group
 
-## Create a Linux virtual machine and install Nginx
-### Step 1 - From Cloud Shell, run the following az vm create command to create a Linux VM:
+## Task 1: Create a Cloud Shell account
+-	Connect to the Azure portal and create a resource group:
+  a.	Name: AZ900Lab3Rg-<your initials>
+  b.	Tags: Name: CreatedBy, Value: <Your name no spaces>
+  c.	Tags: Name: Course, Value: Baltic-AZ-900
+-	One created select the resource group and click the Cloud Shell icon  
+  In the top right of your Azure browser tab.
+-	When you open the Cloud Shell for the first time you must configure a storage account to hold any files created or uploaded through it.
+-	Once the split screen opens select PowerShell from the Welcome to Azure Cloud Shell.
+-	On the ‘You have no storage mounted’ screen select Create storage.
+
+## Task 2: Create a Linux Virtual machine and install an extension
+Once the Cloud Shell has finished loading use the following code snippets to create a Linux virtual machine and deploy a VM extension to install and configure the VM as a web server. Replace all instances of [your resource group name] with the name of the resource group you created in Task 1.
+
+- Run the following ```az vm create``` command to create the Linux VM:
 ```
 az vm create `
   --resource-group [your resource group name] `
@@ -13,9 +26,9 @@ az vm create `
   --admin-username azureuser `
   --generate-ssh-keys
 ```
-- Your VM will take a few moments to come up. You have named the VM my-vm. You use this name to refer to the VM in later steps.
+- Your VM will take a few moments to come up. You have named the VM my-vm. You will use this name to refer to the VM in later steps.
 
-### Step 2 - Run the following az vm extension set command to configure Nginx on your VM:
+- Run the following ```az vm extension set`` command to configure Nginx on your VM:
 ```
 az vm extension set `
   --resource-group [your resource group name] `
@@ -23,22 +36,21 @@ az vm extension set `
   --name customScript `
   --publisher Microsoft.Azure.Extensions `
   --version 2.1 `
-  --settings '{"fileUris":["https://raw.githubusercontent.com/balticapprenticeships/AzureTraining/main/AZ-900_Lab_Resources/Lab3-NSG/configure-nginx.sh"]}' `
-  --protected-settings '{"commandToExecute": "./configure-nginx.sh"}'
+  --settings '{\"fileUris\":[\"https://raw.githubusercontent.com/balticapprenticeships/AzureTraining/main/AZ-900_Lab_Resources/Lab3-NSG/configure-nginx.sh\"]}' `
+  --protected-settings '{\"commandToExecute\": \"./configure-nginx.sh\"}'
 ```
-- This command uses the Custom Script Extension to run a Bash script on your VM. The script is stored on GitHub. While the command runs, you can choose to examine the Bash script from a separate browser tab.
+This command uses the Custom Script Extension to run a Bash script on your VM. The scripts can be stored on GitHub, inhected into our VMs and executed.
+The script:
 
-- To summarize, the script:
-
-    Runs apt-get update to download the latest package information from the internet. This step helps ensure that the next command can locate the latest version of the Nginx package.
-    Installs Nginx.
-    Sets the home page, /var/www/html/index.html, to print a welcome message that includes your VM's host name.
+   - Runs apt-get update to download the latest package information from the internet. This step helps ensure that the next command can locate the latest version of the Nginx package.
+   - Installs Nginx.
+   - Sets the home page, /var/www/html/index.html, to print a welcome message that includes your VM's host name.
 
 
-## Access the web server
-### Step 1 - Run the following az vm list-ip-addresses command to get your VM's IP address and store the result as a Bash variable:
+## Task 3: Access the web server
+### Step 1 - Run the following ```az vm list-ip-addresses``` command to get your VM's IP address and store the result as a Bash variable:
 ```
-IPADDRESS="$(az vm list-ip-addresses `
+$IPADDRESS="$(az vm list-ip-addresses `
   --resource-group [your resource group name] `
   --name my-vm `
   --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" `
