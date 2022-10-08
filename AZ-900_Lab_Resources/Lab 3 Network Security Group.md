@@ -3,24 +3,27 @@
 ## Create a Linux virtual machine and install Nginx
 ### Step 1 - From Cloud Shell, run the following az vm create command to create a Linux VM:
 ```
-az vm create \
-  --resource-group [your resource group name] \
-  --name my-vm \
-  --image UbuntuLTS \
-  --admin-username azureuser \
+az vm create `
+  --resource-group [your resource group name] `
+  --name my-vm `
+  --image UbuntuLTS `
+  --size Standard_B1ms `
+  --public-ip-sku Basic `
+  --storage-sku Standard_LRS `
+  --admin-username azureuser `
   --generate-ssh-keys
 ```
 - Your VM will take a few moments to come up. You have named the VM my-vm. You use this name to refer to the VM in later steps.
 
 ### Step 2 - Run the following az vm extension set command to configure Nginx on your VM:
 ```
-az vm extension set \
-  --resource-group [your resource group name] \
-  --vm-name my-vm \
-  --name customScript \
-  --publisher Microsoft.Azure.Extensions \
-  --version 2.1 \
-  --settings '{"fileUris":["https://raw.githubusercontent.com/MicrosoftDocs/mslearn-welcome-to-azure/master/configure-nginx.sh"]}' \
+az vm extension set `
+  --resource-group [your resource group name] `
+  --vm-name my-vm `
+  --name customScript `
+  --publisher Microsoft.Azure.Extensions `
+  --version 2.1 `
+  --settings '{"fileUris":["https://raw.githubusercontent.com/balticapprenticeships/AzureTraining/main/AZ-900_Lab_Resources/Lab3-NSG/configure-nginx.sh"]}' `
   --protected-settings '{"commandToExecute": "./configure-nginx.sh"}'
 ```
 - This command uses the Custom Script Extension to run a Bash script on your VM. The script is stored on GitHub. While the command runs, you can choose to examine the Bash script from a separate browser tab.
@@ -35,10 +38,10 @@ az vm extension set \
 ## Access the web server
 ### Step 1 - Run the following az vm list-ip-addresses command to get your VM's IP address and store the result as a Bash variable:
 ```
-IPADDRESS="$(az vm list-ip-addresses \
-  --resource-group [your resource group name] \
-  --name my-vm \
-  --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" \
+IPADDRESS="$(az vm list-ip-addresses `
+  --resource-group [your resource group name] `
+  --name my-vm `
+  --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" `
   --output tsv)"
 ```
 ### Step 2 - Run the following curl command to download the home page:
@@ -56,9 +59,9 @@ echo $IPADDRESS
 ```
 ## List the current network security group rules
 ### Step 1
-az network nsg list \
-  --resource-group [your resource group name] \
-  --query '[].name' \
+az network nsg list `
+  --resource-group [your resource group name] `
+  --query '[].name' `
   --output tsv
 
 - you should see
@@ -67,18 +70,18 @@ az network nsg list \
 ```
 ### Step 2 - Run the following command to list the associated NSG rules
 ```
-az network nsg rule list \
-  --resource-group [your resource group name] \
+az network nsg rule list `
+  --resource-group [your resource group name] `
   --nsg-name my-vmNSG
 ```
 ### Step 3
 - Run the az network nsg rule list command a second time. This time, use the --query argument to retrieve only the name, priority, affected ports, and access (Allow or Deny) for each rule. 
 - The --output argument formats the output as a table so that it's easy to read.
 ```
-az network nsg rule list \
-  --resource-group [your resource group name] \
-  --nsg-name my-vmNSG \
-  --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' \
+az network nsg rule list `
+  --resource-group [your resource group name] `
+  --nsg-name my-vmNSG `
+  --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' `
   --output table
 ```
 - You should see
@@ -91,23 +94,23 @@ default-allow-ssh  1000        22      Allow
 
 ### Step 1 Run the following az network nsg rule create command to create a rule called allow-http that allows inbound access on port 80:
 ```
-az network nsg rule create \
-  --resource-group [your resource group name] \
-  --nsg-name my-vmNSG \
-  --name allow-http \
-  --protocol tcp \
-  --priority 100 \
-  --destination-port-ranges 80 \
+az network nsg rule create `
+  --resource-group [your resource group name] `
+  --nsg-name my-vmNSG `
+  --name allow-http `
+  --protocol tcp `
+  --priority 100 `
+  --destination-port-ranges 80 `
   --access Allow
 ```
 - For learning purposes, here you set the priority to 100. In this case, the priority doesn't matter. You would need to consider the priority if you had overlapping port ranges.
 
 ### Step 2 - To verify the configuration, run az network nsg rule list to see the updated list of rules:
 ```
-az network nsg rule list \
-  --resource-group [your resource group name] \
-  --nsg-name my-vmNSG \
-  --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' \
+az network nsg rule list `
+  --resource-group [your resource group name] `
+  --nsg-name my-vmNSG `
+  --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' `
   --output table
 ```
 - You see both the default-allow-ssh rule and your new rule, allow-http:
