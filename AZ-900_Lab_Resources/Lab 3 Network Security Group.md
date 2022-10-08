@@ -2,14 +2,15 @@
 
 ## Task 1: Create a Cloud Shell account
 Step 1 -	Connect to the Azure portal and create a resource group:
-  1 Name: AZ900Lab3Rg-<your initials>
-  2 Tags: Name: CreatedBy, Value: <Your name no spaces>
-  3 Tags: Name: Course, Value: Baltic-AZ-900
-Step 2 -	One created select the resource group and click the Cloud Shell icon
-(https://learn.microsoft.com/en-us/azure/cloud-shell/media/overview/portal-launch-icon.png)
-  In the top right of your Azure browser tab.
+  a. Name: AZ900Lab3Rg-<your initials>
+  b. Tags: Name: CreatedBy, Value: <Your name no spaces>
+  c. Tags: Name: Course, Value: Baltic-AZ-900
+Step 2 -	One created select the resource group and click the [Cloud Shell icon](https://learn.microsoft.com/en-us/azure/cloud-shell/media/overview/portal-launch-icon.png) in the top right of your Azure browser tab.
+
 Step 3 -	When you open the Cloud Shell for the first time you must configure a storage account to hold any files created or uploaded through it.
+
 Step 4 -	Once the split screen opens select ***PowerShell*** from the Welcome to Azure Cloud Shell.
+
 Step 5 -	On the ***You have no storage mounted*** screen select ***Create storage***.
 
 ## Task 2: Create a Linux Virtual machine and install an extension
