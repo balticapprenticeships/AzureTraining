@@ -14,7 +14,7 @@
 ## Task 2: Create a Linux Virtual machine and install an extension
 Once the Cloud Shell has finished loading use the following code snippets to create a Linux virtual machine and deploy a VM extension to install and configure the VM as a web server. Replace all instances of [your resource group name] with the name of the resource group you created in Task 1.
 
-- Run the following ```az vm create``` command to create the Linux VM:
+Step 1: Run the following ```az vm create``` command to create the Linux VM:
 ```
 az vm create `
   --resource-group [your resource group name] `
@@ -26,9 +26,9 @@ az vm create `
   --admin-username azureuser `
   --generate-ssh-keys
 ```
-- Your VM will take a few moments to come up. You have named the VM my-vm. You will use this name to refer to the VM in later steps.
+Your VM will take a few moments to come up. You have named the VM my-vm. You will use this name to refer to the VM in later steps.
 
-- Run the following ```az vm extension set`` command to configure Nginx on your VM:
+Step 2: Run the following ```az vm extension set``` command to configure Nginx on your VM:
 ```
 az vm extension set `
   --resource-group [your resource group name] `
@@ -48,7 +48,7 @@ The script:
 
 
 ## Task 3: Access the web server
-### Step 1 - Run the following ```az vm list-ip-addresses``` command to get your VM's IP address and store the result as a Bash variable:
+Step 1 - Run the following ```az vm list-ip-addresses``` command to get the public IP address of the VM and store it in a variable called IPADDRESSES:
 ```
 $IPADDRESS="$(az vm list-ip-addresses `
   --resource-group [your resource group name] `
@@ -56,39 +56,42 @@ $IPADDRESS="$(az vm list-ip-addresses `
   --query "[].virtualMachine.network.publicIpAddresses[*].ipAddress" `
   --output tsv)"
 ```
-### Step 2 - Run the following curl command to download the home page:
+Step 2 - Run the following curl command to view the contents of the home page in the Azure CLI
 ```
 curl --connect-timeout 5 http://$IPADDRESS
 ```
-- The --connect-timeout argument specifies to allow up to five seconds for the connection to occur. After five seconds, you see an error message that states that the connection timed out:
+The --connect-timeout argument specifies to allow up to five seconds for the connection to occur. After five seconds, you see an error message that states that the connection timed out:
+```
 curl: (28) Connection timed out after 5001 milliseconds
+```
+This message means that the VM wasn't accessible within the timeout period.
 
-- This message means that the VM wasn't accessible within the timeout period.
-
-### Step 3 - Run the following to display you IP Address
+### Step 3 - Try it from a web browser using the following echo command to display the public IP address:
 ```
 echo $IPADDRESS
 ```
-## List the current network security group rules
-### Step 1
+
+## Task 4: View the network security group and rules.
+Step 1 - Run the following ```az network nsg list``` command to list the network security group associated with your VM:
+```
 az network nsg list `
   --resource-group [your resource group name] `
   --query '[].name' `
   --output tsv
+```
 
-- you should see
+You should see:
 ```
  my-vmNSG
 ```
-### Step 2 - Run the following command to list the associated NSG rules
+
+Step 2 - Now use the following ```az network nsg``` command to list the associated rules
 ```
 az network nsg rule list `
   --resource-group [your resource group name] `
   --nsg-name my-vmNSG
 ```
-### Step 3
-- Run the az network nsg rule list command a second time. This time, use the --query argument to retrieve only the name, priority, affected ports, and access (Allow or Deny) for each rule. 
-- The --output argument formats the output as a table so that it's easy to read.
+Step 3 - The JSON output can be difficult to read. We will re-run the ```az network nsg rule list``` command, but this time we will add the ```--query``` argument and output the results to a formatted table:
 ```
 az network nsg rule list `
   --resource-group [your resource group name] `
@@ -96,15 +99,16 @@ az network nsg rule list `
   --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' `
   --output table
 ```
-- You should see
+You should see:
 ```
 Name               Priority    Port    Access
 -----------------  ----------  ------  --------
 default-allow-ssh  1000        22      Allow
 ```
-## Create the network security group rule
 
-### Step 1 Run the following az network nsg rule create command to create a rule called allow-http that allows inbound access on port 80:
+## Task 5: Create a network security rule
+
+Step 1 - Run the following ```az network nsg rule create``` command to create a new rule that will allow inbound HTTP traffic on TCP port 80:
 ```
 az network nsg rule create `
   --resource-group [your resource group name] `
@@ -115,9 +119,8 @@ az network nsg rule create `
   --destination-port-ranges 80 `
   --access Allow
 ```
-- For learning purposes, here you set the priority to 100. In this case, the priority doesn't matter. You would need to consider the priority if you had overlapping port ranges.
 
-### Step 2 - To verify the configuration, run az network nsg rule list to see the updated list of rules:
+Step 2 - To verify that the rule has been successfully created by running the az network nsg rule list command outputting to a formatted table:
 ```
 az network nsg rule list `
   --resource-group [your resource group name] `
@@ -125,24 +128,25 @@ az network nsg rule list `
   --query '[].{Name:name, Priority:priority, Port:destinationPortRange, Access:access}' `
   --output table
 ```
-- You see both the default-allow-ssh rule and your new rule, allow-http:
+You should now see both the default-allow-ssh rule and your new rule, allow-http:
 ```
 Name               Priority    Port    Access
 -----------------  ----------  ------  --------
 default-allow-ssh  1000        22      Allow
 allow-http         100         80      Allow
 ```
-## Access your web server again
 
-## Now that you've configured network access to port 80, let's try to access the web server a second time.
+## Task 6: Access your web server again
 
-### Step 1 - Run the same curl command that you ran earlier:
+Now that you've configured network access to port 80, let's try to access the web server a second time.
+
+Step 1 - Run the same curl command that you ran earlier:
 ```
 curl --connect-timeout 5 http://$IPADDRESS
 ```
 
-- you should see:
+You should now see the contents of the index.html file:
 ```
-<html><body><h2>Welcome to Azure! My name is my-vm.</h2></body></html>
+<html><body><h2>Welcome to the Baltic Apprenticeships Azure Fundamentals Course! This web servers host name is my-vm.</h2></body></html>
 ```
 ## Try this again in your browser.
