@@ -11,6 +11,7 @@
 *.sln.docstates
 [Dd]ev
 [Tt]rainer
+[Aa]rchive
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
