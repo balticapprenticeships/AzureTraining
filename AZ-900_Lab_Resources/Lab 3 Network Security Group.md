@@ -3,16 +3,15 @@
 ## Task 1: Create a Cloud Shell account
 Step 1 -	Connect to the Azure portal and create a resource group:
   - Name: AZ900Lab3Rg-\<your initials\>
+  - Regiion: UK West
   - Tags: Name: CreatedBy, Value: \<Your name no spaces\>
   - Tags: Name: Course, Value: Baltic-AZ-900
 
-Step 2 -	One created select the resource group and click the Cloud Shell icon ![icon](https://learn.microsoft.com/en-us/azure/cloud-shell/media/overview/portal-launch-icon.png) in the top right of your Azure browser tab.
+Step 2 -	Once created select the resource group and click the Cloud Shell icon  ![icon](https://learn.microsoft.com/en-us/azure/cloud-shell/media/overview/portal-launch-icon.png)  in the top right of your Azure browser tab.
 
-Step 3 -	When you open the Cloud Shell for the first time you must configure a storage account to hold any files created or uploaded through it.
+Step 3 -	When you open the Cloud Shell for the first time you must configure a storage account to hold any files created or uploaded through it.	Once the split screen opens select ***PowerShell*** from the Welcome to Azure Cloud Shell.
 
-Step 4 -	Once the split screen opens select ***PowerShell*** from the Welcome to Azure Cloud Shell.
-
-Step 5 -	On the ***You have no storage mounted*** screen select ***Create storage***.
+Step 4 -	On the ***You have no storage mounted*** screen select ***Create storage***.
 
 ## Task 2: Create a Linux Virtual machine and install an extension
 Once the Cloud Shell has finished loading use the following code snippets to create a Linux virtual machine and deploy a VM extension to install and configure the VM as a web server. Replace all instances of [your resource group name] with the name of the resource group you created in Task 1.
@@ -29,7 +28,7 @@ az vm create `
   --admin-username azureuser `
   --generate-ssh-keys
 ```
-Your VM will take a few moments to come up. You have named the VM my-vm. You will use this name to refer to the VM in later steps.
+Your VM will take a few moments to come up. The hostname of the VM will be  my-vm. You will use this name to refer to the VM in later steps.
 
 Step 2: Run the following ```az vm extension set``` command to configure Nginx on your VM:
 ```
@@ -42,7 +41,7 @@ az vm extension set `
   --settings '{\"fileUris\":[\"https://raw.githubusercontent.com/balticapprenticeships/AzureTraining/main/AZ-900_Lab_Resources/Lab3-NSG/configure-nginx.sh\"]}' `
   --protected-settings '{\"commandToExecute\": \"./configure-nginx.sh\"}'
 ```
-This command uses the Custom Script Extension to run a Bash script on your VM. The scripts can be stored on GitHub, inhected into our VMs and executed.
+This command uses the Custom Script Extension to run a Bash script on your VM. Scripts can be stored on GitHub, injected into VMs and executed.
 The script:
 
    - Runs apt-get update to download the latest package information from the internet. This step helps ensure that the next command can locate the latest version of the Nginx package.
@@ -69,7 +68,7 @@ curl: (28) Connection timed out after 5001 milliseconds
 ```
 This message means that the VM wasn't accessible within the timeout period.
 
-### Step 3 - Try it from a web browser using the following echo command to display the public IP address:
+Step 3 - Try it from a web browser using the following echo command to display the public IP address:
 ```
 echo $IPADDRESS
 ```
@@ -88,7 +87,7 @@ You should see:
  my-vmNSG
 ```
 
-Step 2 - Now use the following ```az network nsg``` command to list the associated rules
+Step 2 - Now use the following ```az network nsg rule list``` command to list the associated rules
 ```
 az network nsg rule list `
   --resource-group [your resource group name] `
