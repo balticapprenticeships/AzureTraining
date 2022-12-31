@@ -7,7 +7,7 @@
 # Set the environment variable. Add the *REQUIRED* information.
 
 # The resource group where the VM is located. *REQUIRED*
-$rg = "AZ-104Lab6Rg-<your initials>"
+$rg = "AZ-104Lab1aRg-<your initials>"
 
 # This is the name of the VM to attach the disk to. *REQUIRED*
 $vmName = "<VM Name>"
