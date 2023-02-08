@@ -38,8 +38,8 @@ az vm extension set `
   --name customScript `
   --publisher Microsoft.Azure.Extensions `
   --version 2.1 `
-  --settings '{\"fileUris\":[\"https://raw.githubusercontent.com/balticapprenticeships/AzureTraining/main/AZ-900_Lab_Resources/Lab3-NSG/configure-nginx.sh\"]}' `
-  --protected-settings '{\"commandToExecute\": \"./configure-nginx.sh\"}'
+  --settings '{"fileUris":["https://raw.githubusercontent.com/balticapprenticeships/AzureTraining/main/AZ-900_Lab_Resources/Lab3-NSG/configure-nginx.sh"]}' `
+  --protected-settings '{"commandToExecute": "./configure-nginx.sh"}'
 ```
 This command uses the Custom Script Extension to run a Bash script on your VM. Scripts can be stored on GitHub, injected into VMs and executed.
 The script:
